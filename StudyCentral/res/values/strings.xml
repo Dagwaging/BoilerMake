@@ -3,8 +3,10 @@
 
     <string name="app_name">Study Central</string>
     <string name="action_settings">Settings</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string-array name="sample_groups">
+        <item >Group One</item>
+        <item >Group Two</item>
+        <item >Group Three</item>
+    </string-array>
 
 </resources>

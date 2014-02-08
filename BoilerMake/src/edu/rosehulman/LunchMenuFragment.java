@@ -14,13 +14,14 @@ public class LunchMenuFragment extends Fragment {
 	private LinearLayout breakfast;
 	private TextView breakfast_text;
 	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		ScrollView view = (ScrollView) inflater.inflate(R.layout.lunchmenu, container);
 		
 		breakfast = (LinearLayout) view.findViewById(R.id.menu_breakfast);
-		breakfast_text = (TextView) breakfast.findViewById(R.id.textView1);
+		breakfast_text = (TextView) breakfast.findViewById(R.id.text_breakfast);
 		
 		return view;
 	}

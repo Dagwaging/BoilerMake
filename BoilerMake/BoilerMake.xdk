@@ -2,11 +2,11 @@
   "project": {
     "projectSettingsVersion": "1.0",
     "creationData": {
-      "type": "Blank Project",
-      "src": "blankProject",
-      "projectGuid": "5722b554-7aac-4708-ae58-f17b03b6726a",
-      "lastModifiedDate": 1391833024599,
-      "creationDate": 1391833024571
+      "type": "App Designer",
+      "src": "appDesigner",
+      "projectGuid": "7633ac90-1ca7-4359-be91-3e500ffc0952",
+      "lastModifiedDate": 1391838094096,
+      "creationDate": 1391838094050
     },
     "projectFiles": {},
     "projectDirectories": {},

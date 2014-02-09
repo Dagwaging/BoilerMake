@@ -98,7 +98,7 @@ public class FacebookActivity extends FragmentActivity implements
 		this.mapper = mapper;
 	}
 
-	protected DynamoDBMapper getMapper() {
+	public DynamoDBMapper getMapper() {
 		return mapper;
 	}
 }

@@ -1,5 +1,11 @@
 package com.boilermake.studycentral;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -9,7 +15,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.boilermake.studycentral.data.Group;
+import com.boilermake.studycentral.data.Person;
 import com.boilermake.studycentral.facebook.FacebookActivity;
+import com.boilermake.studycentral.facebook.LoginTask.LoginTaskCallback;
 
 public class MainActivity extends FacebookActivity implements
 		ActionBar.TabListener {
@@ -31,6 +41,8 @@ public class MainActivity extends FacebookActivity implements
 	 */
 	ViewPager mViewPager;
 
+	private List<LoginTaskCallback> listeners;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,6 +51,8 @@ public class MainActivity extends FacebookActivity implements
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+		listeners = new ArrayList<LoginTaskCallback>();
+		
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
 
@@ -100,6 +114,9 @@ public class MainActivity extends FacebookActivity implements
 		public Fragment getItem(int position) {
 			Fragment fragment = fragments[position].createInstance();
 			
+			if(position == 0)
+				listeners.add((GroupListFragment) fragment);
+			
 			return fragment;
 		}
 
@@ -114,4 +131,11 @@ public class MainActivity extends FacebookActivity implements
 		}
 	}
 
+	@Override
+	public void onLoginCompleted(DynamoDBMapper mapper) {
+		super.onLoginCompleted(mapper);
+		
+		for(LoginTaskCallback listener : listeners)
+			listener.onLoginCompleted(mapper);
+	}
 }

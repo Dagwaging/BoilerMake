@@ -12,5 +12,7 @@
     <string name="fb_role_arn">arn:aws:iam::937634834341:role/boilermake_user</string>
     <string name="access_key_id">AKIAJSR5XZHZGJVLAEIA</string>
     <string name="secret_key">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</string>
-
+	<string name="provider">graph.facebook.com</string>
+    
 </resources>
+ 

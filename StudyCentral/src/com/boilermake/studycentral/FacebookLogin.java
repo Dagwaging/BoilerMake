@@ -76,10 +76,6 @@ public class FacebookLogin extends Activity {
 
 		}
 
-		// We do not have a UI for this activity but the Login widget provided
-		// by Facebook can still be used to control the session
-		Button loginButton = new LoginButton(this);
-
 		// For scenarios where the main activity is launched and user
 		// session is not null, the session state change notification
 		// may not be triggered. Trigger it if it's open/closed.
@@ -88,9 +84,9 @@ public class FacebookLogin extends Activity {
 			onSessionStateChange(session, session.getState(), null);
 		} else if (session != null && session.isClosed()) {
 			onSessionStateChange(session, session.getState(), null);
-			loginButton.performClick();
+			session = Session.openActiveSession(this, true, new SessionStatusCallback());
 		} else {
-			loginButton.performClick();
+			session = Session.openActiveSession(this, true, new SessionStatusCallback());
 		}
 
 		uiHelper.onResume();
@@ -128,8 +124,8 @@ public class FacebookLogin extends Activity {
 	public void onSessionStateChange(Session session, SessionState state,
 			Exception exception) {
 		if (session.isOpened()) {
-			Log.d(LOG_TAG, "session is open");
-
+			Log.d(LOG_TAG, "session is open: " + session.getAccessToken());
+			
 			setResult(Activity.RESULT_OK, new Intent().putExtra(TOKEN_KEY, session.getAccessToken()));
 			finish();
 		}

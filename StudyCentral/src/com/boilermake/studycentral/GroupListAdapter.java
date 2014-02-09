@@ -2,6 +2,8 @@ package com.boilermake.studycentral;
 
 import java.util.ArrayList;
 
+import com.boilermake.studycentral.data.Group;
+
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,13 +46,13 @@ class GroupListAdapter extends BaseAdapter {
 		
 		Group item = getItem(position);
 		
-		TextView itemName = (TextView) convertView.findViewById(R.id.item_name);
+		/*TextView itemName = (TextView) convertView.findViewById(R.id.item_name);
 		TextView itemLocation = (TextView) convertView.findViewById(R.id.item_location);
 		TextView itemSize = (TextView) convertView.findViewById(R.id.item_size);
 		
-		itemName.setText(item.name);
-		itemLocation.setText(item.location);
-		itemSize.setText(item.size);
+		itemName.setText(item.getName());
+		itemLocation.setText(item.getLocation());
+		itemSize.setText(item.getSize());*/
 		
 		return convertView;
 	}

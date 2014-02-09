@@ -4,14 +4,17 @@ import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
-public class MainActivity extends FragmentActivity implements
+import com.boilermake.studycentral.facebook.FacebookActivity;
+
+public class MainActivity extends FacebookActivity implements
 		ActionBar.TabListener {
+
+	private static final String TAG = "com.boilermake.studycentral.MainActivity";
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide

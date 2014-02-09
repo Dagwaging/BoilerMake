@@ -1,5 +1,7 @@
 package com.boilermake.studycentral;
 
+import com.boilermake.studycentral.data.Group;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,8 +19,8 @@ public class InviteListFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_invite_list, container, false);
 		
 		adapter = new GroupListAdapter(getActivity());
-		adapter.addItem(new Group("6:00 PM Calculus", "Olin", "6 members"));
-		adapter.addItem(new Group("4:00 PM CSSE 220", "Scharpe", "3 members"));
+		adapter.addItem(new Group());
+		adapter.addItem(new Group());
 		
 		listView = (ListView) view.findViewById(R.id.group_list);
 		listView.setAdapter(adapter);

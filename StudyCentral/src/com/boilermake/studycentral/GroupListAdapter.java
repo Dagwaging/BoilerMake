@@ -59,8 +59,8 @@ class GroupListAdapter extends BaseAdapter {
 		itemName.setText(item.getName());
 		itemLocation.setText(item.getLocation());
 		
-		if(item.getSize() != null)
-			itemSize.setText(item.getSize().toString());
+		if(item.getMembers() != null)
+			itemSize.setText(Integer.toString(item.getMembers().size()));
 		
 		return convertView;
 	}

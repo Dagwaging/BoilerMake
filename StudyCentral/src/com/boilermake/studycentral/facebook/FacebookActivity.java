@@ -1,5 +1,8 @@
 package com.boilermake.studycentral.facebook;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +19,7 @@ public class FacebookActivity extends FragmentActivity implements
 	private UiLifecycleHelper uiHelper;
 	private Session session;
 	private DynamoDBMapper mapper;
+	private List<LoginTaskCallback> listeners;
 	
 	public static final String SHARED_PREFERENCES = "com.boilermake.studycentral";
 	public static final String PREFERENCE_NAME = "name";
@@ -24,11 +28,16 @@ public class FacebookActivity extends FragmentActivity implements
 	protected Session getSession() {
 		return session;
 	}
+	
+	public void addListener(LoginTaskCallback listener) {
+		listeners.add(listener);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
+		listeners = new ArrayList<LoginTaskCallback>();
 		uiHelper = new UiLifecycleHelper(this, this);
 		uiHelper.onCreate(savedInstanceState);
 	}
@@ -79,13 +88,6 @@ public class FacebookActivity extends FragmentActivity implements
 	}
 
 	@Override
-	protected void onStop() {
-		super.onStop();
-
-		uiHelper.onStop();
-	}
-
-	@Override
 	public void call(Session session, SessionState state, Exception exception) {
 		if (session.isOpened()) {
 			LoginTask loginTask = new LoginTask(this, this);
@@ -96,6 +98,9 @@ public class FacebookActivity extends FragmentActivity implements
 	@Override
 	public void onLoginCompleted(DynamoDBMapper mapper) {
 		this.mapper = mapper;
+		
+		for(LoginTaskCallback listener : listeners)
+			listener.onLoginCompleted(mapper);
 	}
 
 	public DynamoDBMapper getMapper() {

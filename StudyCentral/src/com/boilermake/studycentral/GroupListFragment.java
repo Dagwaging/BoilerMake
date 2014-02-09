@@ -2,17 +2,23 @@ package com.boilermake.studycentral;
 
 import java.util.List;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.boilermake.studycentral.data.Group;
@@ -20,16 +26,17 @@ import com.boilermake.studycentral.data.Person;
 import com.boilermake.studycentral.facebook.FacebookActivity;
 import com.boilermake.studycentral.facebook.LoginTask.LoginTaskCallback;
 
-public class GroupListFragment extends Fragment implements LoginTaskCallback {
+public class GroupListFragment extends Fragment implements LoginTaskCallback, OnItemClickListener {
 	private static final String LOG_TAG = "com.boilermake.studycentral.GroupListFragment";
 	ListView listView;
-	FacebookActivity activity;
-	
+	GroupListAdapter adapter;
+	private DynamoDBMapper mapper;
+
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		
-		this.activity = (FacebookActivity) activity;
+		((FacebookActivity) getActivity()).addListener(this);
 	}
 
 	@Override
@@ -38,6 +45,14 @@ public class GroupListFragment extends Fragment implements LoginTaskCallback {
 		View view = inflater.inflate(R.layout.fragment_group_list, container, false);
 		
 		listView = (ListView) view.findViewById(R.id.group_list);
+		
+		ProgressBar progress = new ProgressBar(getActivity());
+		
+		getActivity().addContentView(progress, new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER));
+		
+		listView.setEmptyView(progress);
+		
+		listView.setOnItemClickListener(this);
 		
 		setHasOptionsMenu(true);
 		
@@ -53,7 +68,9 @@ public class GroupListFragment extends Fragment implements LoginTaskCallback {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
 		case R.id.join:
+			Intent intent = new Intent(getActivity(), JoinGroupActivity.class);
 			
+			startActivity(intent);
 			
 			return true;
 		}
@@ -67,14 +84,14 @@ public class GroupListFragment extends Fragment implements LoginTaskCallback {
 		protected List<Group> doInBackground(Void... params) {
 			Person self = Person.getSelf(getActivity());
 			
-			List<Group> result = self.getGroups(activity.getMapper());
+			List<Group> result = self.getGroups(mapper);
 			
 			return result;
 		}
 
 		@Override
 		protected void onPostExecute(List<Group> result) {
-			GroupListAdapter adapter = new GroupListAdapter(getActivity());
+			adapter = new GroupListAdapter(getActivity());
 			
 			adapter.setData(result);
 			
@@ -84,7 +101,18 @@ public class GroupListFragment extends Fragment implements LoginTaskCallback {
 
 	@Override
 	public void onLoginCompleted(DynamoDBMapper mapper) {
+		this.mapper = mapper;
+		
 		LoadGroupsTask loadGroupsTask = new LoadGroupsTask();
 		loadGroupsTask.execute();
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> root, View view, int position, long itemId) {
+		String id = adapter.getItem(position).getId();
+		
+		Intent intent = new Intent(getActivity(), GroupActivity.class);
+		intent.putExtra(GroupFragment.KEY_ID, id);
+		startActivity(intent);
 	}
 }

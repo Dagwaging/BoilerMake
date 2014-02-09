@@ -1,5 +1,8 @@
 package com.boilermake.studycentral;
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsyncClient;
+
 public class Group {
 	public String name;
 	public String location;
